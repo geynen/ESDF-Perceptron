@@ -1,0 +1,75 @@
+/* CSS Document */
+body {font:0.9em Arial, Helvetica, sans-serif; background:url(../Imagenes/2/backGround1.png);}
+#marco {width:970px; height:auto; border:1px solid #999999;	margin:0 auto; background:#FFFFFF; padding:0; }
+
+#headerPanel, #bottomPanel {height:110px; background:#CCCCCC; margin:0; }
+#headerPanel { background:url(../Imagenes/fondoHeader.gif) repeat-x; border-bottom:1px dotted #CCCCCC;}
+
+#headerPanel h2{margin:0; padding-top:1em; color:#3399CC; }
+
+#bottomPanel {height:100px; background:url(../Imagenes/fondoHeader2.gif) repeat-x bottom; border-top:1px dotted #CCCCCC;}
+
+#headerPanel #navSite {list-style:square; margin:0; padding:0; position:absolute; top:130px; }
+
+#headerPanel #navSite li {display:inline; padding:0.2em 0.8em; }
+
+#headerPanel #navSite li a { font:bold 0.8em Arial, Helvetica, sans-serif}
+
+#centralPanel {height:370px; margin:0; overflow:auto;}
+.reportes , .reportes2{height:350px; margin:0 1em;; overflow:auto; border:1px solid #666666; padding:0.5em;}
+
+
+#centralPanel #itemProveedores, #centralPanel #itemCompras{float:left; width:47%; margin-top:1.5em; padding:0.5em; }
+
+#centralPanel #divIngresoVenta .itemVentaIzquierda{width:38%; }
+
+#centralPanel #divIngresoVenta .itemVentaDerecha,
+#centralPanel #divIngresoCompra .itemVentaDerecha {width:57%; overflow:auto; height:190px;}
+
+#centralPanel #itemCompras{}
+
+#centralPanel #itemPagos{width:49%; margin:0 auto; text-align:center; }
+
+.clearFloat {clear:both;}
+
+.centrarText {text-align:center;}
+
+form .claveValor {margin-bottom:.5em; }
+
+form  input {padding:0.15em; }
+
+form .claveValor label{float:left; width:150px;}
+
+form fieldset {padding-top:1em; }
+
+form table input,  form table select {border:}
+	.campoNormal {width:12em; }
+	.campoMedioNormal{width:18em;}
+	.campoAncho {width:24em; }
+	form .pequenio {width:4em; padding:0;}
+	form .masPequenio {width:3em; padding:0; }
+	form fieldset.fechas {margin:1em 0; }
+	form .labelFecha { margin-left:1em;}
+
+
+table {font-size:0.9em; border-collapse:inherit; margin:0 auto; }
+
+table th {background:#; color:#FFFFFF; padding:0.1em .5em; border:1px solid #; font-size:.9em; }
+
+table td {padding:0.1em .5em; border:1px solid #; }
+
+.numeros, table td.mayusculas {font-size:.85em; }
+
+tbody.resumenVenta td { border:none; font-weight:bold; padding-right:1em;}
+
+.tablaRepDeposito { float:left; margin-left:1em; width:48%; }
+
+.zebra tr:hover { background:#B1CEEB; }
+.oscuro {background:#E4EBFA;}
+.expandida { width:92%;}
+.negrita { font-weight:bold; }
+
+#divcboExamen { }
+
+
+

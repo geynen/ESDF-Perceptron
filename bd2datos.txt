@@ -1,0 +1,259 @@
+-- phpMyAdmin SQL Dump
+-- version 2.11.0
+-- http://www.phpmyadmin.net
+--
+-- Servidor: localhost
+-- Tiempo de generación: 11-12-2011 a las 18:50:55
+-- Versión del servidor: 5.0.45
+-- Versión de PHP: 5.2.4
+
+SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
+
+--
+-- Base de datos: `sdklogicfuzzy`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `membresia`
+--
+
+CREATE TABLE `membresia` (
+  `idmembresia` int(11) NOT NULL auto_increment,
+  `descripcion` varchar(50) collate utf8_spanish_ci NOT NULL,
+  `comentario` varchar(200) collate utf8_spanish_ci NOT NULL,
+  `idtipocriterio` int(11) NOT NULL,
+  `tipo` char(1) collate utf8_spanish_ci NOT NULL default 'I' COMMENT 'I->entrada, O->Salida',
+  `tipocontrol` char(1) collate utf8_spanish_ci NOT NULL COMMENT 'O->Opcion, V->valor',
+  `estado` char(1) collate utf8_spanish_ci NOT NULL default 'N',
+  PRIMARY KEY  (`idmembresia`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci AUTO_INCREMENT=4 ;
+
+--
+-- Volcar la base de datos para la tabla `membresia`
+--
+
+INSERT INTO `membresia` (`idmembresia`, `descripcion`, `comentario`, `idtipocriterio`, `tipo`, `tipocontrol`, `estado`) VALUES
+(1, 'EDAD', 'EDAD', 1, 'I', 'V', 'N'),
+(2, 'HERENCIA FAMILIAR', 'ANTECEDENTES DE ENFERMEDAD POR HERENCIA FAMILIAR', 1, 'I', 'O', 'N'),
+(3, 'ENFERMEDAD POR HERENCIA', 'ENFERMEDAD POR HERENCIA', 1, 'O', 'O', 'N');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `persona`
+--
+
+CREATE TABLE `persona` (
+  `idpersona` int(11) NOT NULL auto_increment,
+  `codigo` varchar(10) collate utf8_spanish_ci NOT NULL,
+  `apellidopaterno` varchar(25) collate utf8_spanish_ci NOT NULL,
+  `apellidomaterno` varchar(25) collate utf8_spanish_ci NOT NULL,
+  `nombres` varchar(25) collate utf8_spanish_ci NOT NULL,
+  `fechanacimiento` date NOT NULL,
+  `lugarnacimiento` varchar(25) collate utf8_spanish_ci NOT NULL,
+  `sexo` char(1) collate utf8_spanish_ci NOT NULL,
+  `nrodoc` varchar(8) collate utf8_spanish_ci NOT NULL,
+  `direccion` varchar(50) collate utf8_spanish_ci NOT NULL,
+  `estadocivil` char(1) collate utf8_spanish_ci NOT NULL COMMENT 'S->Soltero,C->Casado,D->Divorsiado,V-Viudo',
+  `telefonofijo` varchar(10) collate utf8_spanish_ci NOT NULL,
+  `celular` varchar(10) collate utf8_spanish_ci NOT NULL,
+  `email` varchar(50) collate utf8_spanish_ci NOT NULL,
+  `estado` char(1) collate utf8_spanish_ci NOT NULL,
+  `foto` varchar(255) collate utf8_spanish_ci NOT NULL,
+  PRIMARY KEY  (`idpersona`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci AUTO_INCREMENT=3 ;
+
+--
+-- Volcar la base de datos para la tabla `persona`
+--
+
+INSERT INTO `persona` (`idpersona`, `codigo`, `apellidopaterno`, `apellidomaterno`, `nombres`, `fechanacimiento`, `lugarnacimiento`, `sexo`, `nrodoc`, `direccion`, `estadocivil`, `telefonofijo`, `celular`, `email`, `estado`, `foto`) VALUES
+(1, '001', 'MONTENEGRO', 'COCHAS', 'GEYNEN', '1987-10-07', 'Lonya Grande', 'M', '44611543', 'Jr.Colombia 217 Chiclayo', 'S', '', '979368623', 'geynen_0710@hotmail.com', 'N', ''),
+(2, '002', 'QUINTANA', 'PEREZ', 'RONNIE', '2011-11-24', '', 'M', '11111111', 'XX', 'S', 'x', 'x', 'x', 'N', '');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `reglas`
+--
+
+CREATE TABLE `reglas` (
+  `idregla` int(11) NOT NULL auto_increment,
+  `membresia_input1` varchar(100) collate utf8_spanish_ci NOT NULL,
+  `variable_input1` varchar(100) collate utf8_spanish_ci NOT NULL,
+  `operadorlogico` varchar(100) collate utf8_spanish_ci NOT NULL,
+  `membresia_input2` varchar(100) collate utf8_spanish_ci NOT NULL,
+  `variable_input2` varchar(100) collate utf8_spanish_ci NOT NULL,
+  `membresia_output` varchar(100) collate utf8_spanish_ci NOT NULL,
+  `variable_output` varchar(100) collate utf8_spanish_ci NOT NULL,
+  PRIMARY KEY  (`idregla`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci AUTO_INCREMENT=17 ;
+
+--
+-- Volcar la base de datos para la tabla `reglas`
+--
+
+INSERT INTO `reglas` (`idregla`, `membresia_input1`, `variable_input1`, `operadorlogico`, `membresia_input2`, `variable_input2`, `membresia_output`, `variable_output`) VALUES
+(1, '1', '1', 'AND', '2', '5', '3', '9'),
+(2, '1', '1', 'AND', '2', '6', '3', '10'),
+(3, '1', '1', 'AND', '2', '7', '3', '10'),
+(4, '1', '1', 'AND', '2', '8', '3', '10'),
+(5, '1', '2', 'AND', '2', '5', '3', '9'),
+(6, '1', '2', 'AND', '2', '6', '3', '10'),
+(7, '1', '2', 'AND', '2', '7', '3', '10'),
+(8, '1', '2', 'AND', '2', '8', '3', '10'),
+(9, '1', '3', 'AND', '2', '5', '3', '9'),
+(10, '1', '3', 'AND', '2', '6', '3', '10'),
+(11, '1', '3', 'AND', '2', '7', '3', '10'),
+(12, '1', '3', 'AND', '2', '8', '3', '11'),
+(13, '1', '4', 'AND', '2', '5', '3', '9'),
+(14, '1', '4', 'AND', '2', '6', '3', '10'),
+(15, '1', '4', 'AND', '2', '7', '3', '10'),
+(16, '1', '4', 'AND', '2', '8', '3', '11');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `respuestas`
+--
+
+CREATE TABLE `respuestas` (
+  `idrespuesta` int(11) NOT NULL auto_increment,
+  `idpersona` int(11) NOT NULL,
+  `idmembresia` int(11) NOT NULL,
+  `idvariable` int(11) NOT NULL,
+  `valor` decimal(10,2) NOT NULL,
+  PRIMARY KEY  (`idrespuesta`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci AUTO_INCREMENT=3 ;
+
+--
+-- Volcar la base de datos para la tabla `respuestas`
+--
+
+INSERT INTO `respuestas` (`idrespuesta`, `idpersona`, `idmembresia`, `idvariable`, `valor`) VALUES
+(1, 1, 1, 0, 15.00),
+(2, 1, 2, 7, 55.00);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `tipo_criterio`
+--
+
+CREATE TABLE `tipo_criterio` (
+  `idtipocriterio` int(11) NOT NULL auto_increment,
+  `descripcion` varchar(50) collate utf8_spanish_ci NOT NULL,
+  `comentario` varchar(1000) collate utf8_spanish_ci NOT NULL,
+  `estado` char(1) collate utf8_spanish_ci NOT NULL,
+  PRIMARY KEY  (`idtipocriterio`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci AUTO_INCREMENT=3 ;
+
+--
+-- Volcar la base de datos para la tabla `tipo_criterio`
+--
+
+INSERT INTO `tipo_criterio` (`idtipocriterio`, `descripcion`, `comentario`, `estado`) VALUES
+(1, 'DATOS PERSONALES', '', 'N'),
+(2, 'PERFIL DE TRABAJO', '', 'N');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `tipo_membresia`
+--
+
+CREATE TABLE `tipo_membresia` (
+  `idtipomembresia` int(11) NOT NULL auto_increment,
+  `nombre` varchar(25) collate utf8_spanish_ci NOT NULL,
+  `comentario` varchar(10000) collate utf8_spanish_ci NOT NULL,
+  PRIMARY KEY  (`idtipomembresia`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci AUTO_INCREMENT=4 ;
+
+--
+-- Volcar la base de datos para la tabla `tipo_membresia`
+--
+
+INSERT INTO `tipo_membresia` (`idtipomembresia`, `nombre`, `comentario`) VALUES
+(1, 'LINFINITY', ''),
+(2, 'TRIANGLE', ''),
+(3, 'RINFINITY', '');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `tipo_usuario`
+--
+
+CREATE TABLE `tipo_usuario` (
+  `idtipousuario` int(11) NOT NULL auto_increment,
+  `descripcion` varchar(30) collate utf8_spanish_ci NOT NULL,
+  `estado` char(1) collate utf8_spanish_ci NOT NULL,
+  PRIMARY KEY  (`idtipousuario`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci AUTO_INCREMENT=3 ;
+
+--
+-- Volcar la base de datos para la tabla `tipo_usuario`
+--
+
+INSERT INTO `tipo_usuario` (`idtipousuario`, `descripcion`, `estado`) VALUES
+(1, 'Administrador', 'N'),
+(2, 'Postulante', 'N');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `usuario`
+--
+
+CREATE TABLE `usuario` (
+  `idusuario` int(11) NOT NULL auto_increment,
+  `idpersona` int(11) NOT NULL,
+  `login` varchar(40) collate utf8_spanish_ci NOT NULL,
+  `clave` varchar(32) collate utf8_spanish_ci NOT NULL,
+  `idtipousuario` int(11) NOT NULL,
+  PRIMARY KEY  (`idusuario`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci AUTO_INCREMENT=2 ;
+
+--
+-- Volcar la base de datos para la tabla `usuario`
+--
+
+INSERT INTO `usuario` (`idusuario`, `idpersona`, `login`, `clave`, `idtipousuario`) VALUES
+(1, 1, 'admin', '202cb962ac59075b964b07152d234b70', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `variable_linguistica`
+--
+
+CREATE TABLE `variable_linguistica` (
+  `idvariable` int(11) NOT NULL auto_increment,
+  `nombre` varchar(50) collate utf8_spanish_ci NOT NULL,
+  `valorinicial` decimal(10,2) NOT NULL,
+  `valormedio` decimal(10,2) NOT NULL,
+  `valorfinal` decimal(10,2) NOT NULL,
+  `idtipomembresia` int(11) NOT NULL,
+  `idmembresia` int(11) NOT NULL,
+  PRIMARY KEY  (`idvariable`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci AUTO_INCREMENT=13 ;
+
+--
+-- Volcar la base de datos para la tabla `variable_linguistica`
+--
+
+INSERT INTO `variable_linguistica` (`idvariable`, `nombre`, `valorinicial`, `valormedio`, `valorfinal`, `idtipomembresia`, `idmembresia`) VALUES
+(1, 'NIÑO', 0.00, 15.00, 30.00, 1, 1),
+(2, 'ADOLECENTE - JOVEN', 20.00, 35.00, 50.00, 2, 1),
+(3, 'ADULTO', 40.00, 55.00, 70.00, 2, 1),
+(4, 'VIEJO', 60.00, 75.00, 90.00, 3, 1),
+(5, 'NO TIENE', 0.00, 15.00, 30.00, 1, 2),
+(6, 'SOLO DE MADRE', 20.00, 35.00, 50.00, 2, 2),
+(7, 'PADRE Y MADRE', 40.00, 55.00, 70.00, 2, 2),
+(8, 'CASI TODA LA FAMILIA', 60.00, 75.00, 90.00, 3, 2),
+(9, 'NO PRESENTA', 0.00, 20.00, 40.00, 1, 3),
+(10, 'PUEDE PRESENTAR', 30.00, 50.00, 70.00, 2, 3),
+(11, 'PRESENTA', 60.00, 80.00, 100.00, 1, 3),
+(12, 'TIENE DIABETES', 90.00, 110.00, 130.00, 3, 3);

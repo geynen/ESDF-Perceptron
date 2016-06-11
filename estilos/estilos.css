@@ -1,0 +1,122 @@
+	.tableRollOverEffect1{
+		background-color:#2764BE;
+		color:#FFFFFF;
+		
+	}
+	
+	.tableRowClickEffect1{
+		background-color:#E83C5E;
+		color:#FFFFFF;
+	}
+	
+.etiqueta{
+	font-size: 14px;
+	text-align:right;
+	font-family:Cambria;
+	font-weight: bold;
+}
+.th{
+	background:#2764BE;
+	font-family:Cambria;
+	color:#FFFFFF;
+	font-size: 16px;
+	font-weight: bold;
+}
+
+.cabezera{
+	/*background:#38A564;*/
+	background:#4F984B;
+	/*background:url(../IMAGENES/azul.jpg)*/
+	font-family:Cambria;
+	color:#FFFFFF;
+	font-size: 12px;
+	font-weight: bold;
+}
+.titulo
+{
+
+	font-family: "Arial Black";
+	font-weight: bold;
+	font-size: 24px;
+}
+.tituloMenu
+{
+
+	font-family: "Arial Black";
+	color:#000099;
+	font-weight: bold;
+	font-size: 30px;
+	border:thin solid #000099;
+}
+.subtitulo
+{
+
+	font-family: "Arial Black";
+	font-weight: bold;
+	font-size: 16px;
+}
+.titulologeo
+{
+
+	font-family: "Forte";
+	color:#FFFFFF;
+	font-weight: bold;
+	font-size: 24px;
+}
+.etiquetalogeo{
+	font-size: 14px;
+	color:#FFFFFF;
+	font-family:Cambria;
+	font-weight: bold;
+}
+body
+{
+background:#FFFFFF;
+
+}
+.a1
+{
+font-size:16px;
+color:#FFFFFF;
+}
+.a2
+{
+font-size:16px;
+}
+#menu ul{
+	display:block;
+	padding: 16px;
+	margin: 16px;
+	width: 200px;
+	background-image:url(../IMAGENES/azul2.jpg);
+	border: thin solid  #0066FF;
+	}
+
+#menu ul a{
+	color:#333300;
+	text-decoration:none;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 14px;
+	text-align:center;
+	font-weight: bold;
+	display: block;
+	background-color:#96E0FC;
+	
+	border: thin solid #0066FF;
+	padding: 8px;
+	margin: 8px;
+	}		
+#menu ul a:hover{
+	background-color:#4E9A9A;
+	color:#FFFFFF;
+	}
+.par{
+ background-color:#E1ECDF;
+}
+
+.tablaint{
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	background-color:  #D6FFC1;
+	margin: 0px;
+}
