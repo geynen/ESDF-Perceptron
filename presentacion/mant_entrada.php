@@ -99,14 +99,14 @@ $dato = $rst->fetchObject();
 	<td align="left"><textarea name="txtcomentario" cols="20" id="txtcomentario"><?php if($_GET['accion']=='ACTUALIZAR') echo $dato->comentario;?></textarea>	
 	</td>
 </tr>
-<tr> 
+<tr style="display:none"> 
 	<td> RESPUETA POSITIVA </td>
 	<td align="left"><input type='text'id='txtRespuestaPositivo' name='txtRespuestaPositivo' 
 	value = '<?php if($_GET['accion']=='ACTUALIZAR')
 	echo $dato->respuesta_positivo; else echo 'Si';?>' maxlength="50" size="20">
 	</td>
 </tr>
-<tr> 
+<tr style="display:none"> 
 	<td> RESPUETA NEGATIVA </td>
 	<td align="left"><input type='text'id='txtRespuestaNegativo' name='txtRespuestaNegativo' 
 	value = '<?php if($_GET['accion']=='ACTUALIZAR')

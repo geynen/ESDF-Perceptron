@@ -25,6 +25,21 @@ function verificaNroDoc($nro){
 }
 
 $xajax->registerFunction("verificaNroDoc");
+
+function verificaUsuario($nombreusuario){
+	require("../negocio/cls_usuario.php");
+	$oUsuario = new clsUsuario();
+	$consulta = $oUsuario->verificaExisteUsuario($nombreusuario);
+
+	$Cadena="";
+	if($consulta->rowCount()!=0){$Cadena=$Cadena."El nombre de Usuario ya existe";}
+	$Cadena=utf8_encode($Cadena);
+	$obj=new xajaxResponse();
+    $obj->assign("LabelVerificaUsuario","innerHTML",$Cadena);
+	return $obj;
+}
+
+$xajax->registerFunction("verificaUsuario");
 $xajax->processRequest();
 echo '<?xml version="1.0" encoding="UTF-8"?>';
 require("headerNew.php");
@@ -89,16 +104,16 @@ function check_form(formMantPersona) {
   form = formMantPersona;
   error_message = "Hay errores en su formulario!\nPor favor, haga las siguientes correciones:\n\n";
 
-  check_input("txtApellidosyNombres", 1, "La Persona debe tener un nombre");
-  check_input("txtNroDoc", 1, "La Persona debe tener un documento");
+  check_input("txtCodigo", 1, "La Persona debe tener un codigo");
+  check_input("txtNombres", 1, "La Persona debe tener un nombre");
+  check_input("txtApellidoPaterno", 1, "La Persona debe tener un apellido paterno");
+  check_input("txtApellidoMaterno", 1, "La Persona debe tener un apellido materno");
+  check_input("txtNroDoc", 1, "La Persona debe tener un numero documento");
+  check_input("txtFechaNacimiento", 1, "La Persona debe tener una fecha de nacimiento");
 /*  check_input("txtDireccion", 1, "La Persona debe tener direccion");
   check_input("txtCelular", 1, "La Persona debe tener celular");
   check_input("txtEmail", 1, "La Persona debe tener email");*/
-  check_select ("cboArea", 0, "Debe seleccionar un Area");
-  check_select ("cboSector", 0, "Debe seleccionar un Sector");
   check_select ("cboSexo", 0, "Debe seleccionar un Sexo");
-  check_select ("cboZona", 0, "Debe seleccionar una Zona");
-  check_select ("cboRol", 0, "Debe seleccionar un Rol");
   
   if (error == true) {
     alert(error_message);
@@ -121,7 +136,26 @@ function verificaNroDoc(nro,Accion)
 			return true;
 		}else{
 			if(Accion=='NUEVO'){
-				alert("El Número de Documento ya existe");
+				alert("El Numero de Documento ya existe");
+				return false;
+			} else{
+				return true;
+			}
+		}
+	}
+}
+function verificaUsuario(nombreusuario,Accion)
+{
+	if(nombreusuario==""){
+		return true;
+	}else
+	{
+		xajax_verificaUsuario(nombreusuario);
+		if(LabelVerificaUsuario.innerHTML==""){ 
+			return true;
+		}else{
+			if(Accion=='NUEVO'){
+				alert("El nombre de usuario ya existe");
 				return false;
 			} else{
 				return true;
@@ -145,16 +179,16 @@ function verificaNroDoc(nro,Accion)
 <div id="centralPanel">
 <div class="centrarText">
 <form action=<?php echo '../negocio/cont_persona.php?accion='.$_GET['accion']?> 
-method='POST' onSubmit="if(verificaNroDoc(txtNroDoc.value,'<?php 
-echo $_GET['accion'];?>')==false){return false;}else{ return check_form(formMantPersona);}" name="formMantPersona">
+method='POST' onSubmit="if(verificaNroDoc(txtNroDoc.value,'<?php echo $_GET['accion'];?>')==false || verificaUsuario(txtUsuario.value,'<?php echo $_GET['accion'];?>')==false){return false;}else{ return check_form(formMantPersona);}" name="formMantPersona">
   <p>
   <input type='hidden' name = 'txtIdPersona' value = '<?php echo $_GET['IdPersona'];?>'>
   <?php
-	require("../datos/cado.php");
-	if($_GET['accion']=='ACTUALIZAR'){
-	require("../negocio/cls_persona.php");
-	
+require("../datos/cado.php");
+require("../negocio/cls_persona.php");
 $objPersona = new clsPersona();
+
+if($_GET['accion']=='ACTUALIZAR'){
+
 $rst = $objPersona->buscar($_GET['IdPersona'],'');
 $dato = $rst->fetchObject();
 }
@@ -167,9 +201,7 @@ $dato = $rst->fetchObject();
 <table width="644" align="center" class="tablaint">
 <tr>
   <td align="left"> CODIGO :</td>
-  <td colspan="3" align="left"><input type='text' name = 'txtCodigo' 
-  value = '<?php if($_GET['accion']=='ACTUALIZAR')
-  echo $dato->codigo;?>' maxlength="10" size="10" style= "text-transform:uppercase"></td>
+  <td colspan="3" align="left"><input type='text' name = 'txtCodigo' value = '<?php if($_GET['accion']=='ACTUALIZAR') echo $dato->codigo; else echo $objPersona->generaCodigo();?>' maxlength="10" size="10" style= "text-transform:uppercase"></td>
   </tr>
 <tr>
 	<td width="172" align="left"> NOMBRES :</td>
@@ -192,7 +224,7 @@ $dato = $rst->fetchObject();
 	<td align="left"><input type='text' name = 'txtNroDoc' value = '<?php
 	if($_GET['accion']=='ACTUALIZAR') {
 	echo $dato->nrodoc;} else { echo '11111111111';}?>' onKeyPress="if (event.keyCode < 45 || event.keyCode > 57) event.returnValue
-	 = false;"onBlur="verificaNroDoc(this.value);" size='11' maxlength='11'></td>
+	 = false;" onBlur="verificaNroDoc(this.value);" size='11' maxlength='11'><label id="LabelVerificaNroDoc" style="color: #003399"></label></td>
 	<td align="left"><div id="DivSexo1">SEXO : </div></td>
 	<td align="left"><div id="DivSexo2"><select name="cboSexo">
 	<?php
@@ -229,8 +261,7 @@ $dato = $rst->fetchObject();
 	<td align="left"> DIRECCI&Oacute;N : </td>
 	<td colspan="3" align="left"><input type='text' name = 'txtDireccion' 
 	value = '<?php if($_GET['accion']=='ACTUALIZAR')
-	echo $dato->direccion;?>' maxlength="50" size="30" style= "text-transform:uppercase">	  <label id="LabelVerificaNroDoc" style="color: #003399"	
-	 ></label></td>
+	echo $dato->direccion;?>' maxlength="50" size="30" style= "text-transform:uppercase"></td>
 	</tr>
 <tr>
 	<td align="left">ESTADO CIVIL : </td>
@@ -276,11 +307,14 @@ $dato = $rst->fetchObject();
 <tr>
 	<td align="left">USUARIO </td>
 	<td align="left"><input type="hidden" name="txtUsuarioOld" value="<?php if($_GET['accion']=='ACTUALIZAR')echo $dato->login;?>">
-    <input type="text" name="txtUsuario" value="<?php if($_GET['accion']=='ACTUALIZAR')echo $dato->login;?>"></td>
+    <input type="text" name="txtUsuario" id="txtUsuario" value="<?php if($_GET['accion']=='ACTUALIZAR')echo $dato->login;?>" onBlur="xajax_verificaUsuario(this.value)">
+    <label id="LabelVerificaUsuario" style="color: #003399"></label>
+    </td>
 </tr>
 <tr>
 	<td width="159" align="left"> CONTRASE&Ntilde;A </td>
-	<td width="547" align="left"> <input type="password" name="txtClave"><br>Dejar en blanco sino desea cambiar</tr>
+	<td width="547" align="left"> <input type="password" name="txtClave"><?php if($_GET['accion']=='ACTUALIZAR'){?><br>
+	Dejar en blanco si no desea cambiar<?php }?></tr>
 <tr>
 <tr>
   <th colspan="4">

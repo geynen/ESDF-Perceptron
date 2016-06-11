@@ -4,7 +4,7 @@ class clsPersona
 function insertar($codigo, $apellidopaterno, $apellidomaterno, $nombres, $fechanacimiento, $lugarnacimiento, $sexo, $nrodoc, $direccion, $estadocivil, $telefonofijo, $celular, $email)
  {
     $sql = "INSERT INTO PERSONA(idpersona, codigo, apellidopaterno, apellidomaterno, nombres, fechanacimiento, lugarnacimiento, sexo, nrodoc, direccion, estadocivil, telefonofijo, celular, email, estado) VALUES(NULL,'$codigo', upper(trim('$apellidopaterno')), upper(trim('$apellidomaterno')), upper(trim('$nombres')), '$fechanacimiento', '$lugarnacimiento', '$sexo', '$nrodoc', '$direccion', '$estadocivil', '$telefonofijo', '$celular', '$email', 'N')";
-	
+
       global $cnx;
       $cnx->query($sql) or die($sql);	 	
  }

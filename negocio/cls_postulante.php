@@ -23,5 +23,18 @@ function obtenerLastId()
    global $cnx;
    return $cnx->query($sql);  	 	
  }
+ 
+function obtenerIdPostulante($idpersona,$idconvocatoria)
+ {
+   $sql = "SELECT idpostulante FROM postulante WHERE idpersona=$idpersona AND idconvocatoria=$idconvocatoria";
+   global $cnx;
+   $rst = $cnx->query($sql); 
+   if($rst->rowCount()>0){
+   $dato = $rst->fetchObject();
+   		return $dato->idpostulante;
+   }else{
+	   return '';
+   }
+ }
 } 
 ?>

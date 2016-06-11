@@ -43,7 +43,7 @@ while($dato = $rst->fetchObject())
 		  $tabla.="<td><div align='center'><a href='resultadofinal3.php?IdConvocatoria=".$dato->idconvocatoria."&IdPerfil=".$dato->idperfil."'><img src='../imagenes/resultados.png' width='100' height='28' border='0'></a></div></td>";
 		  $tabla.="<td><div align='center'><a href='list_personatest.php?IdConvocatoria=".$dato->idconvocatoria."&IdPerfil=".$dato->idperfil."'><img src='../imagenes/postulantes.png' width='100' height='28' border='0'></a></div></td>";
 	  }else{
-	  	  $tabla.="<td><a href='test.php?IdPersona=".$_SESSION['Cod']."&IdConvocatoria=".$dato->idconvocatoria."&IdPerfil=".$dato->idperfil."'><img src='../imagenes/postular.png' width='100' height='28' border='0'></a></td>";
+	  	  $tabla.="<td><a href='test.php?IdPersona=".$_SESSION['Cod']."&IdConvocatoria=".$dato->idconvocatoria."&IdPerfil=".$dato->idperfil."&IdPostulante=".$dato->idpostulante."'><img src='../imagenes/postular.png' width='100' height='28' border='0'></a></td>";
 	  }
 	  
     $tabla.="</tr>";

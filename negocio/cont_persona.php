@@ -29,7 +29,7 @@ function controlador($accion)
 		
 		require("cls_usuario.php");
 		$ObjUsuario = new clsUsuario();
-		$ObjUsuario->insertarUsuario($dato->IdPersona,$_POST['txtUsuario'], md5($_POST['txtClave']), $_POST['txtTipoUsuario']);
+		$ObjUsuario->insertarUsuario($dato->IdPersona,$_POST['txtUsuario'], md5($_POST['txtClave']), $_POST['cboTipoUsuario']);
 		
 		$cnx->commit(); 
 		header('Location: ../presentacion/list_persona.php');

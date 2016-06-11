@@ -27,6 +27,21 @@ function verificaNroDoc($nro){
 }
 
 $xajax->registerFunction("verificaNroDoc");
+
+function verificaUsuario($nombreusuario){
+	require("../negocio/cls_usuario.php");
+	$oUsuario = new clsUsuario();
+	$consulta = $oUsuario->verificaExisteUsuario($nombreusuario);
+
+	$Cadena="";
+	if($consulta->rowCount()!=0){$Cadena=$Cadena."El nombre de Usuario ya existe";}
+	$Cadena=utf8_encode($Cadena);
+	$obj=new xajaxResponse();
+    $obj->assign("LabelVerificaUsuario","innerHTML",$Cadena);
+	return $obj;
+}
+
+$xajax->registerFunction("verificaUsuario");
 $xajax->processRequest();
 echo '<?xml version="1.0" encoding="UTF-8"?>';
 require("headerNew.php");
@@ -100,16 +115,15 @@ function check_form(formMantPersona) {
   form = formMantPersona;
   error_message = "Hay errores en su formulario!\nPor favor, haga las siguientes correciones:\n\n";
 
-  check_input("txtApellidosyNombres", 1, "La Persona debe tener un nombre");
-  check_input("txtNroDoc", 1, "La Persona debe tener un documento");
+  check_input("txtCodigo", 1, "La Persona debe tener un codigo");
+  check_input("txtNombres", 1, "La Persona debe tener un nombre");
+  check_input("txtApellidoPaterno", 1, "La Persona debe tener un apellido paterno");
+  check_input("txtApellidoMaterno", 1, "La Persona debe tener un apellido materno");
+  check_input("txtNroDoc", 1, "La Persona debe tener un numero de documento");
 /*  check_input("txtDireccion", 1, "La Persona debe tener direccion");
   check_input("txtCelular", 1, "La Persona debe tener celular");
   check_input("txtEmail", 1, "La Persona debe tener email");*/
-  check_select ("cboArea", 0, "Debe seleccionar un Area");
-  check_select ("cboSector", 0, "Debe seleccionar un Sector");
   check_select ("cboSexo", 0, "Debe seleccionar un Sexo");
-  check_select ("cboZona", 0, "Debe seleccionar una Zona");
-  check_select ("cboRol", 0, "Debe seleccionar un Rol");
   
   if (error == true) {
     alert(error_message);
@@ -140,6 +154,25 @@ function verificaNroDoc(nro,Accion)
 		}
 	}
 }
+function verificaUsuario(nombreusuario,Accion)
+{
+	if(nombreusuario==""){
+		return true;
+	}else
+	{
+		xajax_verificaUsuario(nombreusuario);
+		if(LabelVerificaUsuario.innerHTML==""){ 
+			return true;
+		}else{
+			if(Accion=='NUEVO'){
+				alert("El nombre de usuario ya existe");
+				return false;
+			} else{
+				return true;
+			}
+		}
+	}
+}
 </script>
 <link href="../estilos/estilos.css" rel="stylesheet" type="text/css">
 </head>
@@ -148,8 +181,7 @@ function verificaNroDoc(nro,Accion)
 <div id="centralPanel">
 <div class="centrarText">
 <form action=<?php echo '../negocio/cont_usuario.php?accion='.$_GET['accion'].'-USER'?> 
-method='POST' onSubmit="if(verificaNroDoc(txtNroDoc.value,'<?php 
-echo $_GET['accion'];?>')==false){return false;}else{ return check_form(formMantPersona);}" name="formMantPersona">
+method='POST' onSubmit="if(verificaNroDoc(txtNroDoc.value,'<?php echo $_GET['accion'];?>')==false || verificaUsuario(txtUsuario.value,'<?php echo $_GET['accion'];?>')==false){return false;}else{ return check_form(formMantPersona);}" name="formMantPersona">
   <p>
   <input type='hidden' name = 'txtIdPersona' value = '<?php echo $_SESSION['Cod'];?>'>
   <?php
@@ -269,11 +301,13 @@ $dato = $rst->fetchObject();
 <table width="716" border="0" align="center" class="tablaint">
 <tr>
 	<td align="left">USUARIO </td>
-	<td align="left"><input type="text" name="txtUsuario" value="<?php if($_GET['accion']=='ACTUALIZAR')echo $dato->login;?>"></td>
+	<td align="left"><input type="text" name="txtUsuario" id="txtUsuario" value="<?php if($_GET['accion']=='ACTUALIZAR')echo $dato->login;?>" onBlur="xajax_verificaUsuario(this.value)">
+    <label id="LabelVerificaUsuario" style="color: #003399"></label></td>
 </tr>
 <tr>
 	<td width="159" align="left"> CONTRASE&Ntilde;A </td>
-	<td width="547" align="left"> <input type="password" name="txtClave"><br>Dejar en blanco sino desea cambiar</tr>
+	<td width="547" align="left"> <input type="password" name="txtClave"><br>
+	Dejar en blanco si no desea cambiar</tr>
 <tr>
   <th colspan="4"><input type='submit' name = 'grabar' value='GRABAR' />
     <input type='button' name = 'cancelar' value='CANCELAR' onClick="javascript:window.open('main.php','_self')" /></th>

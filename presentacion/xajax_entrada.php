@@ -16,8 +16,8 @@ $tabla="<table class='tablaint' align='center' border='1' >
       <th class='cabezera'>C&Oacute;DIGO</th>
       <th class='cabezera'>DESCRIPCION</th>
 	  <th class='cabezera'>COMENTARIO</th>
-	  <th class='cabezera'>RESPUESTA POSITIVA</th>
-	  <th class='cabezera'>RESPUESTA NEGATIVA</th>
+	  <th class='cabezera' style='display:none'>RESPUESTA POSITIVA</th>
+	  <th class='cabezera' style='display:none'>RESPUESTA NEGATIVA</th>
 	  <th class='cabezera'>PUNTAJE</th>
       <th colspan='2' class='cabezera'>OPERACIONES</th>
 	  </tr>";
@@ -29,8 +29,8 @@ while($dato = $rst->fetchObject())
       $tabla.="<td align='center' ><div align='center'>".$dato->identrada."</div></td>";
       $tabla.="<td><div align='left' >".$dato->descripcion."</div></td>";
 	  $tabla.="<td><div align='left' >".$dato->comentario."</div></td>";
-	  $tabla.="<td><div align='left' >".$dato->respuesta_positivo."</div></td>";
-	  $tabla.="<td><div align='left' >".$dato->respuesta_negativo."</div></td>";
+	  $tabla.="<td style='display:none'><div align='left'>".$dato->respuesta_positivo."</div></td>";
+	  $tabla.="<td style='display:none'><div align='left'>".$dato->respuesta_negativo."</div></td>";
 	  $tabla.="<td><div align='left' >".$dato->puntaje."</div></td>";
 	  $tabla.="<td><div align='center'>&nbsp;
 	  <a href='mant_entrada.php?accion=ACTUALIZAR&IdEntrada=".$dato->identrada."&IdRubro=".$idrubro."&IdPerfil=".$idperfil."'>

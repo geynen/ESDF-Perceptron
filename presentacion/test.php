@@ -89,6 +89,11 @@ function check_form(form_name) {
     <td>
 	<?php 
 require("../datos/cado.php");
+if($_GET['IdPostulante']=='' or !isset($_GET['IdPostulante'])){
+require_once("../negocio/cls_postulante.php");
+$objPostulante= new clsPostulante();
+$_GET['IdPostulante']=$objPostulante->obtenerIdPostulante($_GET['IdPersona'],$_GET['IdConvocatoria']);
+}
 require_once("../negocio/cls_respuesta.php");
 $objRespuesta= new clsRespuesta();
 require_once("../negocio/cls_persona.php");
@@ -127,12 +132,14 @@ if($cantRubros>0){?>
                 while($dato = $rst->fetchObject()){
 					if($i%2==0) $stilo="par"; else $stilo="";
 					$i++;
-					$rstR = $objRespuesta->buscar(NULL,$_GET['IdPostulante'],$_GET['IdConvocatoria'],$dato->identrada);
-					if($tienerespuestas==false){
-						if($rstR->rowCount()>0) $tienerespuestas=true;
+					if(isset($_GET['IdPostulante']) and $_GET['IdPostulante']!=''){
+						$rstR = $objRespuesta->buscar(NULL,$_GET['IdPostulante'],$_GET['IdConvocatoria'],$dato->identrada);
+						if($tienerespuestas==false){
+							if($rstR->rowCount()>0) $tienerespuestas=true;
+						}
+						$datoR=$rstR->fetchObject();
+						$valorR=$datoR->valor;	
 					}
-					$datoR=$rstR->fetchObject();
-					$valorR=$datoR->valor;					
 					?>
                 	<tr class="<?php echo $stilo;?>">
                     <td><?php echo utf8_encode($dato->descripcion);?></td>

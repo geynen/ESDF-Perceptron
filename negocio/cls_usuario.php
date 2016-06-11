@@ -25,9 +25,19 @@ function actualizarUsuario($idpersona, $login, $clave, $idtipousuario='')
  }
 function logeo($Usuario, $Clave)
  {
-   $sql = "SELECT idpersona,login,clave,idtipousuario FROM usuario WHERE estado='N'";
+   $sql = "SELECT idpersona,login,clave,idtipousuario FROM usuario WHERE 1=1 ";
    if(isset($Usuario) and isset($Clave))
 	$sql = $sql . " AND login = '$Usuario' AND clave = '$Clave'";
+
+   global $cnx;
+   return $cnx->query($sql);   	
+ } 
+
+function verificaExisteUsuario($NombreUsuario)
+ {
+   $sql = "SELECT idpersona FROM usuario WHERE 1=1 ";
+   if(isset($NombreUsuario))
+	$sql = $sql . " AND lower(login) = lower('$NombreUsuario')";
 
    global $cnx;
    return $cnx->query($sql);   	

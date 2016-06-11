@@ -33,10 +33,13 @@ function controlador($accion)
 			if($_SESSION['Tipo']==2){
 				require_once("../negocio/cls_postulante.php");
 				$ObjPostulante= new clsPostulante();
-				$ObjPostulante->insertar($_POST['txtIdPersona'],$_POST['txtIdConvocatoria']);	
-				$rst=$ObjPostulante->obtenerLastId();
-				$dato=$rst->fetchObject();
-				$idpostulante=$dato->idpostulante;
+				$idpostulante=$ObjPostulante->obtenerIdPostulante($_POST['txtIdPersona'],$_POST['txtIdConvocatoria']);
+				if($idpostulante==''){
+					$ObjPostulante->insertar($_POST['txtIdPersona'],$_POST['txtIdConvocatoria']);	
+					$rst=$ObjPostulante->obtenerLastId();
+					$dato=$rst->fetchObject();
+					$idpostulante=$dato->idpostulante;
+				}
 			}else{
 				$idpostulante=$_POST['txtIdPostulante'];
 			}
@@ -64,7 +67,11 @@ function controlador($accion)
 
 			$cnx->commit(); 
 			echo "<script>alert('Guardado correctamente!!');</script>";
-			echo "<META HTTP-EQUIV=Refresh CONTENT='0;URL= ../presentacion/list_personatest.php?IdPerfil=".$_POST['txtIdPerfil']."&IdConvocatoria=".$_POST['txtIdConvocatoria']."'>";
+			if($_SESSION['Tipo']==1){
+				echo "<META HTTP-EQUIV=Refresh CONTENT='0;URL= ../presentacion/list_personatest.php?IdPerfil=".$_POST['txtIdPerfil']."&IdConvocatoria=".$_POST['txtIdConvocatoria']."'>";
+			}else{
+				echo "<META HTTP-EQUIV=Refresh CONTENT='0;URL= ../presentacion/list_convocatoria.php'>";
+			}
 			//header('Location: ../presentacion/resultadofinal.php');
 			return 1;
 		} catch (Exception $e) { 

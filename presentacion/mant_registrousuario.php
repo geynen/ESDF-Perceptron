@@ -8,6 +8,7 @@ require('../xajax/xajax_core/xajax.inc.php');
 $xajax= new xajax();
 $xajax->configure('javascript URI','../xajax/');
 //$xajax->configure('debug', true);//ver errores
+$xajax->configure( 'defaultMode', 'synchronous' );
 
 require("../datos/cado.php");
 
@@ -25,6 +26,21 @@ function verificaNroDoc($nro){
 }
 
 $xajax->registerFunction("verificaNroDoc");
+
+function verificaUsuario($nombreusuario){
+	require("../negocio/cls_usuario.php");
+	$oUsuario = new clsUsuario();
+	$consulta = $oUsuario->verificaExisteUsuario($nombreusuario);
+
+	$Cadena="";
+	if($consulta->rowCount()!=0){$Cadena=$Cadena."El nombre de Usuario ya existe";}
+	$Cadena=utf8_encode($Cadena);
+	$obj=new xajaxResponse();
+    $obj->assign("LabelVerificaUsuario","innerHTML",$Cadena);
+	return $obj;
+}
+
+$xajax->registerFunction("verificaUsuario");
 $xajax->processRequest();
 echo '<?xml version="1.0" encoding="UTF-8"?>';
 require("headerNew2.php");
@@ -92,16 +108,16 @@ function check_form(formMantPersona) {
   form = formMantPersona;
   error_message = "Hay errores en su formulario!\nPor favor, haga las siguientes correciones:\n\n";
 
-  check_input("txtApellidosyNombres", 1, "La Persona debe tener un nombre");
-  check_input("txtNroDoc", 1, "La Persona debe tener un documento");
+  check_input("txtCodigo", 1, "La Persona debe tener un codigo");
+  check_input("txtNombres", 1, "La Persona debe tener un nombre");
+  check_input("txtApellidoPaterno", 1, "La Persona debe tener un apellido paterno");
+  check_input("txtApellidoMaterno", 1, "La Persona debe tener un apellido materno");
+  check_input("txtNroDoc", 1, "La Persona debe tener un numero de documento");
+  check_input("txtFechaNacimiento", 1, "La Persona debe tener una fecha de nacimiento");
 /*  check_input("txtDireccion", 1, "La Persona debe tener direccion");
   check_input("txtCelular", 1, "La Persona debe tener celular");
   check_input("txtEmail", 1, "La Persona debe tener email");*/
-  check_select ("cboArea", 0, "Debe seleccionar un Area");
-/*  check_select ("cboSector", 0, "Debe seleccionar un Sector");
   check_select ("cboSexo", 0, "Debe seleccionar un Sexo");
-  check_select ("cboZona", 0, "Debe seleccionar una Zona");
-  check_select ("cboRol", 0, "Debe seleccionar un Rol");*/
   
   if (error == true) {
     alert(error_message);
@@ -115,10 +131,6 @@ function check_form(formMantPersona) {
 <script>
 function verificaNroDoc(nro,Accion)
 {
-	if(nro=="1111111111"){
-		return true;
-	}else
-	{
 		xajax_verificaNroDoc(nro);
 		if(LabelVerificaNroDoc.innerHTML==""){ 
 			return true;
@@ -130,7 +142,20 @@ function verificaNroDoc(nro,Accion)
 				return true;
 			}
 		}
-	}
+}
+function verificaUsuario(nombreusuario,Accion)
+{
+		xajax_verificaUsuario(nombreusuario);
+		if(LabelVerificaUsuario.innerHTML==""){ 
+			return true;
+		}else{
+			if(Accion=='NUEVO'){
+				alert("El nombre de usuario ya existe");
+				return false;
+			} else{
+				return true;
+			}
+		}
 }
 </script>
 <link href="../estilos/estilos.css" rel="stylesheet" type="text/css">
@@ -147,7 +172,7 @@ function verificaNroDoc(nro,Accion)
   <td width="559"> 
 <!--Inicio-->
 
-<form action="../negocio/cont_usuario.php?accion=NUEVO" method='POST' onSubmit="if(verificaNroDoc(txtNroDoc.value,'NUEVO')==false){return false;}else{ return check_form(formMantPersona);}" 
+<form action="../negocio/cont_usuario.php?accion=NUEVO" method='POST' onSubmit="if(verificaNroDoc(txtNroDoc.value,'NUEVO')==false || verificaUsuario(txtUsuario.value,'NUEVO')==false){return false;}else{ return check_form(formMantPersona);}" 
 name="formMantPersona">
 <input type='hidden' name = 'txtIdPersona' value = '<?php echo $_GET['IdPersona'];?>'>
 <?php
@@ -194,7 +219,7 @@ $dato = $rst->fetchObject();
 	<td> N&Uacute;MERO DOCUMENTO : </td>
 	<td><input type='text' name = 'txtNroDoc' value = '<?php 
 	if($_GET['accion']=='ACTUALIZAR') {
-	echo $dato->nrodoc;} else { echo '11111111111';}?>' onKeyPress="if (event.keyCode < 45 || 		
+	echo $dato->nrodoc;} else { echo '';}?>' onKeyPress="if (event.keyCode < 45 || 		
 	event.keyCode > 57) event.returnValue = false;"
 	onBlur="verificaNroDoc(this.value);" size='11' maxlength='11'> <label id="LabelVerificaNroDoc" 
 	style="color: #003399"></label>
@@ -218,7 +243,7 @@ $dato = $rst->fetchObject();
 </tr>
 <tr>	
 	<td> FECHA NACIMIENTO :</td>
-	<td><input type='text' name = 'txtFechaNacimiento' value = '<?php 
+	<td><input type='text' name = 'txtFechaNacimiento' id="txtFechaNacimiento" value = '<?php 
 	if($_GET['accion']=='ACTUALIZAR')
 	echo $dato->fechanacimiento;?>'maxlength="10" size="10" style= "text-transform:uppercase">
     <button type="button" id="btnCalendar">...</button>
@@ -300,9 +325,9 @@ $dato = $rst->fetchObject();
   <table width="425"  border="0" align="center" class="tablaint">
 <tr>
 	<td width="237"> LOGIN : </td>
-	<td width="178"><input name = 'txtUsuario' type='text' id="txtUsuario" value = '<?php 
+	<td width="178"><input name = 'txtUsuario' id="txtUsuario" type='text' id="txtUsuario" value = '<?php 
 	if($_GET['accion']=='ACTUALIZAR')
-	echo $dato->usuario;?>' size="25" maxlength="50">	</td>
+	echo $dato->usuario;?>' size="25" maxlength="50"><label id="LabelVerificaUsuario" style="color: #003399"></label>	</td>
 </tr>
 <tr>
 	<td> CLAVE : </td>
@@ -313,9 +338,7 @@ $dato = $rst->fetchObject();
 <tr>
   <td colspan="2" align="center"><input name="btnenviar" type="submit" value="REGISTRAR" id="btnenviar">
     <input type='button' name = 'cancelar' value='CANCELAR' onClick="javascript:window.open('../Inicio.php','_self')">
-    <input name = 'txtTipoUsuario' type='hidden' id="txtTipoUsuario" value = '<?php 
-	if($_GET['accion']=='ACTUALIZAR'){
-	echo $dato->tipousuario;} else { echo '2';}?>' size="25" maxlength="50"></td>
+    <input name = 'txtTipoUsuario' type='hidden' id="txtTipoUsuario" value = '<?php if($_GET['accion']=='ACTUALIZAR'){echo $dato->tipousuario;} else { echo '2';}?>' size="25" maxlength="50"></td>
   </tr>
 </table>
 </fieldset>

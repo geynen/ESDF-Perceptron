@@ -58,37 +58,41 @@ if($accion=='ACTUALIZAR-USER'){
 	}   
 }
 if($accion=='LOGEO') {
-
-	$usuario=$_POST['txtusuario'];
-	$clave=md5($_POST['txtclave']);
-		
-	//$sql="SELECT idusuario,idpersona,login,clave,idtipousuario,FOTO FROM usuario 
-	$sql="SELECT idusuario,U.idpersona,login,clave,idtipousuario,P.foto FROM usuario U inner join 
-	persona P on P.idpersona=U.idpersona
-	where login='$usuario'and clave='$clave'";
-	global $cnx;
-	$rs=$cnx->query($sql);
-	$cant=$rs->rowCount();
 	
-	if($cant==1){
-		session_start();
-		$registro=$rs->fetchObject();
-		$_SESSION['Id']=$registro->idusuario;
-		$_SESSION['Cod']=$registro->idpersona;
-		$_SESSION['Nombre']=$usuario;
-		$_SESSION['Nombre']=$registro->login;
-		$_SESSION['Tipo']=$registro->idtipousuario;
-		if(isset($registro->foto) and $registro->foto!=''){
-			$_SESSION['fot']=$registro->foto;
-		}else{
-			$_SESSION['fot']="usuario.gif";
-		}
+	if($_POST['txtusuario']!=''){
+		$usuario=$_POST['txtusuario'];
+		$clave=md5($_POST['txtclave']);
 			
-		if($_SESSION['Tipo']==1) header ("location: ../presentacion/main.php");
-		if($_SESSION['Tipo']==2) header ("location: ../presentacion/main_usuario.php");
+		//$sql="SELECT idusuario,idpersona,login,clave,idtipousuario,FOTO FROM usuario 
+		$sql="SELECT idusuario,U.idpersona,login,clave,idtipousuario,P.foto FROM usuario U inner join 
+		persona P on P.idpersona=U.idpersona
+		where login='$usuario'and clave='$clave'";
+		global $cnx;
+		$rs=$cnx->query($sql);
+		$cant=$rs->rowCount();
+		
+		if($cant==1){
+			session_start();
+			$registro=$rs->fetchObject();
+			$_SESSION['Id']=$registro->idusuario;
+			$_SESSION['Cod']=$registro->idpersona;
+			$_SESSION['Nombre']=$usuario;
+			$_SESSION['Nombre']=$registro->login;
+			$_SESSION['Tipo']=$registro->idtipousuario;
+			if(isset($registro->foto) and $registro->foto!=''){
+				$_SESSION['fot']=$registro->foto;
+			}else{
+				$_SESSION['fot']="usuario.gif";
+			}
+				
+			if($_SESSION['Tipo']==1) header ("location: ../presentacion/main.php");
+			if($_SESSION['Tipo']==2) header ("location: ../presentacion/main_usuario.php");
 		}else{
-			header("location:../inicio.php");
+				header("location:../inicio.php");
 		}
+	}else{
+		header("location:../inicio.php");
 	}
+}
 }
 ?>
